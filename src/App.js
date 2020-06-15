@@ -1,20 +1,14 @@
 import React from 'react';
 import './App.css';
 import ticket_service from './services/ticket_service'
-//import { w3cwebsocket as W3CWebSocket } from "websocket";
+
 import Accounts from './Components/Accounts/Account';
 import Wheel from './Components/Wheel/Wheel'
-
-//const client = new W3CWebSocket('ws://127.0.0.1:8000');
-const socket = new WebSocket('wss://ws.finnhub.io?token=brejt5nrh5rckh45dof0');
+//const socket = new WebSocket('wss://ws.finnhub.io?token=brejt5nrh5rckh45dof0');
 
 // Connection opened -> Subscribe
-socket.addEventListener('open', function (event) {
-    socket.send(JSON.stringify({'type':'subscribe', 'symbol': 'SPY'}))
-});
 
-// Listen for messages
-
+// Listen for messssage
 
 
 class App extends React.Component{
@@ -30,41 +24,45 @@ class App extends React.Component{
     };
   }
   componentWillMount(){
-    socket.addEventListener('message', function (res) {
-      //console.log('Message from server ', event.data);
-      console.log(res)
-  });
+    /*socket.addEventListener('message', function (event) {
+      console.log('Message from server ', event.data);
+      //console.log(res)
+    });*/
   }
 
 
-/*async componentDidMount() {
+async componentDidMount() {
   let a = await ticket_service.getTicketinfo();
   console.log(a);
   this.setState({
     number:a,
   })
-}*/
+}
 handleChangeQuote=(event)=>{
   this.setState({ticker: event.target.value});
 }
 showTicker = () =>{
 return <>
-<p>for {this.state.ticker} the current price is {this.state.SearchTickerNum}</p>
-<button onClick={this.resetSearch}>search another</button>
+<p>{this.state.ticker}current price is {this.state.SearchTickerNum}</p>
+<form onSubmit={this.resetSearch}>
+  <button onClick={this.resetSearch} type="submit">Search another</button>
+</form>
 </>
 }
 resetSearch=()=>{
+  console.log("Reset")
   this.setState({
     SearchTicker:false,
     SearchTickerNum:0,
-    ticker:"",
+    ticker:""
   })
 }
 async submitTicker(e){
   e.preventDefault();
   console.log(this.state);
   let upper=this.state.ticker.toUpperCase();
-  let b = await ticket_service.getSearchedinfo(this.state.ticker)
+  console.log(upper)
+  let b = await ticket_service.getSearchedinfo(upper);
   this.setState({
     SearchTicker:true,
     SearchTickerNum:b,
@@ -72,10 +70,11 @@ async submitTicker(e){
   })
 }
 editForm = () =>{
-  return <form className="searchticker">
-    <label>Ticker</label>
-    <input className="uppercase" onChange={this.handleChangeQuote} value={this.state.ticker} maxlength="4"></input>
-    <button onClick={this.submitTicker}>submit</button>
+  return <form className="searchticker" onSubmit={this.submitTicker}>
+          <label>Ticker</label>
+          <br/>
+          <input className="uppercase" onChange={this.handleChangeQuote} value={this.state.ticker} maxlength="4"></input>
+          <button type="submit">submit</button>
     </form>
 }
 
@@ -83,8 +82,8 @@ editForm = () =>{
 render(){
     return (
       <div className="App">
-        <h1>Stock App</h1>
-        <h2>Current stock APPL:{this.state.number}</h2>
+        <h1>Wheel of Bets</h1>
+        <h2>Current stock SPY:{this.state.number}</h2>
         {this.state.SearchTicker?this.showTicker():this.editForm()}
         <Accounts/>
         <Wheel/>

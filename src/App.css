@@ -1,5 +1,14 @@
+
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:100%;
+  height:100vh;
+  background-color:#404040;
+}
+h1,h2,label,button,p{
+  color: #19c235;
 }
 .uppercase{
   text-transform: uppercase;

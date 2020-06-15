@@ -1,7 +1,7 @@
 import config from '../config'
 const ticket_service={
     getTicketinfo(){
-        return fetch(`${config.API_ENDPOINT}/quote?symbol=AAPL&token=${config.token}`)
+        return fetch(`${config.API_ENDPOINT}/quote?symbol=SPY&token=${config.token}`)
         .then((res)=>res.json())
         .then(quote=>{
             console.log(quote);

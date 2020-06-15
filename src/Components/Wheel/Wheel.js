@@ -1,6 +1,6 @@
 import React from 'react';
 //import './Wheel.css';
-import ticket_service from '../../services/ticket_service'
+//import ticket_service from '../../services/ticket_service'
 
 
 
